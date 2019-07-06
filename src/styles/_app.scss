@@ -1,5 +1,11 @@
 .container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: initial;
+}
+
+.container-comment {
+  display: flex;
+  justify-content: space-between;
+  align-items: initial;
 }

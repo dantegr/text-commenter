@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { PureComponent,  createRef } from 'react';
-import FontAwesome from 'react-fontawesome';
 
 // Store app container in variable
 //const appContainer = document.querySelector('#appContainer');
@@ -76,12 +75,12 @@ class Modal extends PureComponent {
 	}
 }
 
-
-
 // Create component for app header composed of input and button
-const AppHead = ({addTask}) => {
+const AppHead = ({ addTask}) => {
 
   let input;
+
+  const [marked, setMarked] = useState('test');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -97,22 +96,32 @@ const AppHead = ({addTask}) => {
     console.log("Modal footer button was clicked");
   };
 
-  
+  const getMarked = () => {
+    let text = "";
+    if (window.getSelection) {
+        text = window.getSelection().toString();
+    } else if (document.selection && document.selection.type !== "Control") {
+        text = document.selection.createRange().text;
+    }
+    setMarked(text);
+    console.log('worked ' + text);
+  };
+
+ 
+
+
     return (
       <div className="app-container">
         <div className="text-center">
-        <h3>Comments</h3>
-          <button onClick={openModal} style={{ cursor: "pointer" }}>
+        <div className="container-comment">
+        <h3 >Comments</h3>
+          <button onClick={() => {
+          getMarked();
+          openModal();
+          }} className='input-group-addon' style={{ cursor: "pointer" }}>
             Add Comment
           </button>
-          {/*Modal properties
-          - modalClosed => a method to close the modal
-          - show => boolean value to determine whether to show or hide the modal        
-          - modalTitle => modal header text (default empty)
-          - footerBtnText => the text of the footer button (default "close")         
-          - footerBtnListener => a method for the footer button (Note: the footer button will trigger this method as well as the modalClosed method)
-          - useModalHeader => boolean value which determines whether to use the modal header or not (default true) 
-          - useModalFooter => boolean value which determines whether to use the modal footer or not (default true)  */}
+          </div>
           <Modal
             modalClosed={closeModal}          
             show={isModalOpen}
@@ -126,9 +135,9 @@ const AppHead = ({addTask}) => {
           <input ref={node => {
             input = node;
           }} className='form-control' type='text' />
-    
+          
           <button onClick={() => {
-            addTask(input.value);
+            addTask(input.value,marked);
             input.value = '';
             closeModal();
           }} className='input-group-addon'>
@@ -145,7 +154,7 @@ const AppHead = ({addTask}) => {
 const Task = ({task, remove}) => {
   // For each task create list item with specific text and icon to remove the task
   return (
-    <li className='task-item'>{task.text} <span className='fa fa-trash-o task-remover pull-right' onClick={() => {remove(task.id)}}>Remove</span></li>
+    <li className='task-item'><div className="container-comment"> {task.text} {task.markedText} <button className='input-group-addon' onClick={() => {remove(task.id)}}>Remove</button></div></li>
   );
 }
 
@@ -176,15 +185,16 @@ class TaskApp extends React.Component {
   }
 
   // Add task handler
-  addTask(val) {
+  addTask(comm,mComm) {
     // Get the data for tasks such as text and id
     const task = {
-      text: val,
-      id: window.id++
+      text: comm,
+      id: window.id++,
+      markedText: mComm
     }
     
     // Update data if input contains some text
-    if (val.length > 0) this.state.data.push(task);
+    if (comm.length > 0) this.state.data.push(task);
     
     // Update state with newest data - append new task
     this.setState({
