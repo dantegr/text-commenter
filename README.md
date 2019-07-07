@@ -8,67 +8,37 @@ This application allows the user to mark down a piece of text on a given text an
 
 In order to add a comment to the list, the user must first mark the piece of text he is interested in by hitting left click on his mouse and then draging the cursor, and then hit the add comment button to the right. After that a modal window will appear with a text input which the user is required to provide. Then the user must hit the add comment button on the modal in order for the comment to appear on the list.
 
-![Screenshot](screenshot1.jpg)
+![Screenshot](screenshot2.jpg)
 
-### `npm start`
+### How to run it.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+You can the find the app deployed on [https://text-commenter.herokuapp.com/](https://text-commenter.herokuapp.com/).
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+In case you want to run it locally here is how you can do it: 
 
-### `npm test`
+1. Make sure you have installedglobally the most recent version on node.js
+2. Clone this github repo to your computer
+3. Open your favourite terminal app and navigate to folder you've just cloned.
+4. Type `npm install` in order to download all the required node modules
+5. Type `yarn start` in order to start the development server
+6. Open [http://localhost:3000](http://localhost:3000) to view it in your favourite browser.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+### Build with
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+..* React - Javascript framework
+..* Rangy - Library that allows to select elements
+..* jQuery - mainly used to easily get the Rrequired DOM elements  
+..* Node.js - used to build and provide server status
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+### Improvements
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+In order to use this application several improvements must be implemented.
 
-### `npm run eject`
+1. Add an input field that will allow the user to input what ever text he requires.
+2. In order to personalize the application user accounts with authentication should be implemented as well as a database that will allow for multiple texts that the user can save and load on request.
+3. Several css improvements in order to make the application more pleasing to the eye.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Known Issues
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+..* The program can't handle marked inputs which text from more than one elements.
