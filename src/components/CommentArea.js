@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { PureComponent,  createRef } from 'react';
+import React, { useState, PureComponent, createRef } from 'react';
+import $ from 'jquery';
 
 // Store app container in variable
 //const appContainer = document.querySelector('#appContainer');
@@ -79,6 +79,9 @@ class Modal extends PureComponent {
 const AppHead = ({ addTask}) => {
 
   let input;
+ 
+
+  const [tempId, setTempId] = useState('test');
 
   const [marked, setMarked] = useState('test');
 
@@ -98,12 +101,26 @@ const AppHead = ({ addTask}) => {
 
   const getMarked = () => {
     let text = "";
+
+    var span = document.createElement("span");
+  
+    span.className = window.id++;
+
     if (window.getSelection) {
         text = window.getSelection().toString();
+        var sel = window.getSelection();
+        if (sel.rangeCount) {
+            var range = sel.getRangeAt(0).cloneRange();
+            range.surroundContents(span);
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+  
     } else if (document.selection && document.selection.type !== "Control") {
         text = document.selection.createRange().text;
     }
     setMarked(text);
+    setTempId(span.className);
     console.log('worked ' + text);
   };
 
@@ -137,8 +154,10 @@ const AppHead = ({ addTask}) => {
           }} className='form-control' type='text' />
           
           <button onClick={() => {
-            addTask(input.value,marked);
+            addTask(input.value,marked,tempId);
             input.value = '';
+            console.log(tempId);
+            setTempId('');
             closeModal();
           }} className='input-group-addon'>
             Add comment
@@ -153,8 +172,12 @@ const AppHead = ({ addTask}) => {
 // Create component for new task composed of list item, text and icon
 const Task = ({task, remove}) => {
   // For each task create list item with specific text and icon to remove the task
+
+
   return (
-    <li className='task-item'><div className="container-comment"> {task.text} {task.markedText} <button className='input-group-addon' onClick={() => {remove(task.id)}}>Remove</button></div></li>
+    <li className='task-item'><div className={task.id} onClick={() => { $('.'+task.id).toggleClass("active")}}><div className="container-comment">{task.text} {task.markedText} <button className='input-group-addon' onClick={() => { $(task.id).removeClass("active")
+    remove(task.id)  
+    }}>Remove</button></div></div></li>
   );
 }
 
@@ -185,11 +208,11 @@ class TaskApp extends React.Component {
   }
 
   // Add task handler
-  addTask(comm,mComm) {
+  addTask(comm,mComm,id) {
     // Get the data for tasks such as text and id
     const task = {
       text: comm,
-      id: window.id++,
+      id: id,
       markedText: mComm
     }
     
@@ -208,6 +231,8 @@ class TaskApp extends React.Component {
     const taskCollection = this.state.data.filter((task) => {
       if (task.id !== id) return task;
     });
+
+ 
 
     // Update state with filtered results
     this.setState({
