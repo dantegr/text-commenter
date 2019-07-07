@@ -1,8 +1,14 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Text commenter
 
-In the project directory, you can run:
+### Usage
+This application allows the user to mark down a piece of text on a given text and add a comment associated with it. The application allows for multiple comments associated with multiple pieces of the text, which are displayed on a list at the right side of the text. The user can click on a comment of that list in order to highlight its associated piece of text or hit the remove button to remove.
+
+![Screenshot](screenshot1.jpg)
+
+In order to add a comment to the list, the user must first mark the piece of text he is interested in by hitting left click on his mouse and then draging the cursor, and then hit the add comment button to the right. After that a modal window will appear with a text input which the user is required to provide. Then the user must hit the add comment button on the modal in order for the comment to appear on the list.
+
+![Screenshot](screenshot1.jpg)
 
 ### `npm start`
 

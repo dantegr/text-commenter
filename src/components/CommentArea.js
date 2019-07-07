@@ -1,11 +1,12 @@
 import React, { useState, PureComponent, createRef } from 'react';
 import $ from 'jquery';
+import rangy from 'rangy';
 
-// Store app container in variable
-//const appContainer = document.querySelector('#appContainer');
+//Modal Class
 class Modal extends PureComponent {
 	modalWrapper = createRef();
 
+  //Header of the modal
 	renderHeader = () => {
 		const { useModalHeader, modalTitle, modalClosed } = this.props;
 		const headerMarkup = (
@@ -24,6 +25,7 @@ class Modal extends PureComponent {
 		}
 	};
 
+  //Footer of the modal
 	renderFooter = () => {
 		const { useModalFooter, modalClosed, footerBtnCloseText, footerBtnCloseListener } = this.props;
 
@@ -51,6 +53,7 @@ class Modal extends PureComponent {
 		}
 	};
 
+  //Main modal render
 	render() {
 		const { show, modalClosed, children } = this.props;
 
@@ -75,12 +78,12 @@ class Modal extends PureComponent {
 	}
 }
 
-// Create component for app header composed of input and button
-const AppHead = ({ addTask}) => {
+// Create component for comment header 
+const CommentHead = ({ addComment}) => {
 
+  //State variables
   let input;
  
-
   const [tempId, setTempId] = useState('test');
 
   const [marked, setMarked] = useState('test');
@@ -95,30 +98,29 @@ const AppHead = ({ addTask}) => {
     setIsModalOpen(true);
   };
 
-  const testMethod = () => {
-    console.log("Modal footer button was clicked");
-  };
-
+  //Get marked text and wrap it to span tags with a unique id
   const getMarked = () => {
     let text = "";
 
     var span = document.createElement("span");
   
     span.className = window.id++;
+    span.id = span.className;
 
-    if (window.getSelection) {
-        text = window.getSelection().toString();
-        var sel = window.getSelection();
-        if (sel.rangeCount) {
-            var range = sel.getRangeAt(0).cloneRange();
-            range.surroundContents(span);
-            sel.removeAllRanges();
-            sel.addRange(range);
-        }
-  
-    } else if (document.selection && document.selection.type !== "Control") {
-        text = document.selection.createRange().text;
-    }
+    if (rangy.getSelection) {
+      text = rangy.getSelection().toString();
+      var sel = rangy.getSelection();
+      if (sel.rangeCount) {
+          var range = sel.getRangeAt(0).cloneRange();
+          range.surroundContents(span);
+          sel.removeAllRanges();
+          sel.addRange(range);
+      }
+
+  } else if (document.selection && document.selection.type !== "Control") {
+      text = document.selection.createRange().text;
+  }
+
     setMarked(text);
     setTempId(span.className);
     console.log('worked ' + text);
@@ -126,7 +128,7 @@ const AppHead = ({ addTask}) => {
 
  
 
-
+  //Use Modal component
     return (
       <div className="app-container">
         <div className="text-center">
@@ -144,7 +146,6 @@ const AppHead = ({ addTask}) => {
             show={isModalOpen}
             modalTitle="Provide a comment on the selected text"
             footerBtnCloseText="close"
-            footerBtnCloseListener={testMethod}
             useModalHeader={true}
             useModalFooter={true}
           >
@@ -154,7 +155,7 @@ const AppHead = ({ addTask}) => {
           }} className='form-control' type='text' />
           
           <button onClick={() => {
-            addTask(input.value,marked,tempId);
+            addComment(input.value,marked,tempId);
             input.value = '';
             console.log(tempId);
             setTempId('');
@@ -169,36 +170,30 @@ const AppHead = ({ addTask}) => {
     );
 };
 
-// Create component for new task composed of list item, text and icon
-const Task = ({task, remove}) => {
-  // For each task create list item with specific text and icon to remove the task
-
-
+// Create component for new comment composed of list item
+const Comment = ({comment, remove}) => {
+  // For each comment create list item with specific text and remove the comment
   return (
-    <li className='task-item'><div className={task.id} onClick={() => { $('.'+task.id).toggleClass("active")}}><div className="container-comment">{task.text} {task.markedText} <button className='input-group-addon' onClick={() => { $(task.id).removeClass("active")
-    remove(task.id)  
-    }}>Remove</button></div></div></li>
+    <li className='comment-item'><div className={comment.id} onClick={() => { $('.'+comment.id).toggleClass("active")}}><div className="container-comment">{comment.text} <button className='input-group-addon' onClick={() => { 
+    remove(comment.id) }}>Remove</button></div></div></li>
   );
 }
 
-// Create component for list of tasks
-const AppList = ({tasks,remove}) => {
-  // Create new node for each task
-  const taskNode = tasks.map((task) => {
-    return (<Task task={task} key={task.id} remove={remove}/>)
+// Create component for list of comments
+const CommentList = ({comments,remove}) => {
+  const commentNode = comments.map((comment) => {
+    return (<Comment comment={comment} key={comment.id} remove={remove}/>)
   });
 
-  // Return the list component with all tasks
-  return (<ul className='task-list'>{taskNode}</ul>);
+  return (<ul className='comment-list'>{commentNode}</ul>);
 }
 
-// Create global variable for task id
+//global variable for comment id also used for marked down text class
 window.id = 0;
 
-// Create main task app component
-class TaskApp extends React.Component {
+//CommentArea component
+class CommentArea extends React.Component {
   constructor(prop) {
-    // Provide parent class with prop
     super(prop);
 
     // Set initial state as empty
@@ -207,57 +202,50 @@ class TaskApp extends React.Component {
     }
   }
 
-  // Add task handler
-  addTask(comm,mComm,id) {
-    // Get the data for tasks such as text and id
-    const task = {
+  // Add comment handler
+  addComment(comm,mComm,id) {
+    const comment = {
       text: comm,
       id: id,
       markedText: mComm
     }
     
-    // Update data if input contains some text
-    if (comm.length > 0) this.state.data.push(task);
-    
-    // Update state with newest data - append new task
+    if (comm.length > 0) this.state.data.push(comment);
+
     this.setState({
       data: this.state.data
     });
   }
   
-  // Handle remove
-  removeTask(id) {
-    // Filter all tasks except the one to be removed
-    const taskCollection = this.state.data.filter((task) => {
-      if (task.id !== id) return task;
+  //Remove comment handler and also unwrap span tags from the text area
+  removeComment(id) {
+    $("."+id).contents().unwrap();
+
+    const commentCollection = this.state.data.filter((comment) => {
+      if (comment.id !== id) return comment;
     });
 
- 
-
-    // Update state with filtered results
     this.setState({
-      data: taskCollection
+      data: commentCollection
     });
   }
 
   render() {
-    // Render whole App component
-    // use AppHead and AppList components
+  
+    // use CommentHead and CommentList components
     return (
       <div>
-        <AppHead addTask={this.addTask.bind(this)}/>
+        <CommentHead addComment={this.addComment.bind(this)}/>
 
 
-        <AppList 
-          tasks={this.state.data}
-          remove={this.removeTask.bind(this)}
+        <CommentList 
+          comments={this.state.data}
+          remove={this.removeComment.bind(this)}
         />
       </div>
     );
   }
 }
 
-// Finally, render the whole app
-//ReactDOM.render(<TaskApp />, appContainer);
 
-export default TaskApp;
+export default CommentArea;

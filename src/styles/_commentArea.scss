@@ -2,21 +2,6 @@
 // Variables
 $color-primary: #039be5;
 $color-secondary: #eee;
-$radius: 4px;
-
-// Custom styles
-.app-container {
-  margin-top: 2rem;
-  margin-right: auto;
-  margin-left: auto;
-  overflow: hidden;
-  width: 500px;
-
-  background: #fff;
-  border-radius: $radius;
-  box-shadow: 0 1px 3px rgba(0,0,0,.025), 0 3px 6px rgba(0,0,0,.065);
-
-}
 
 .active {
   background: yellow;
@@ -24,7 +9,6 @@ $radius: 4px;
 
 .app-header {
   position: relative;
-  //min-height: remy(260px);
 }
 
 h1 {
@@ -57,7 +41,7 @@ h1 {
   }
 }
 
-.task-list {
+.comment-list {
   padding: 0;
   margin-bottom: 0;
   margin-left: 0;
@@ -65,7 +49,7 @@ h1 {
   list-style-type: none;
 }
 
-.task-item {
+.comment-item {
   padding-top: 0.75rem;
   padding-right: 0.75rem;
   padding-bottom: 0.75rem;
@@ -77,17 +61,5 @@ h1 {
   
   &:last-of-type {
     border-bottom: 1px solid $color-secondary;
-  }
-}
-
-.task-remover {
-  line-height: 1.45;
-  color: #ddd;
-  cursor: pointer;
-  transition: color .25s ease-in-out;
-  
-  &:focus,
-  &:hover {
-    color: #e53935;
   }
 }

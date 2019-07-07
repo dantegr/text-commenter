@@ -1,5 +1,5 @@
 
-// the following is the id of the root element of this app (you can change it if you have another id name)
+
 #root {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -118,18 +118,10 @@
       }
     }
 
-
-   
-  
-
-
     .modal-body {
       position: relative;
       padding: 10px;
       text-align: left;
-      // add the following 2 lines if you want to display the header and the footer at all times when you have a lot of content in the body
-      // max-height: 350px;
-      // overflow-y: auto;
     }
 
     .modal-footer {

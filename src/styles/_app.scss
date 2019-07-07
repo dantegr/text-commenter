@@ -9,3 +9,16 @@
   justify-content: space-between;
   align-items: initial;
 }
+
+
+.app-container {
+  margin-top: 2rem;
+  margin-right: auto;
+  margin-left: auto;
+  overflow: hidden;
+  width: 500px;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.025), 0 3px 6px rgba(0,0,0,.065);
+
+}
